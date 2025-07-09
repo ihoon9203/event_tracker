@@ -19,9 +19,9 @@ export function GameSelector({
 }: GameSelectorProps) {
   return (
     <div className="flex flex-col">
-      <h2 className="text-lg font-semibold mb-3 px-1">Games</h2>
-      <ScrollArea className="h-[calc(100vh-200px)] md:h-auto">
-        <div className="space-y-2 pr-4">
+      <h2 className="text-base md:text-lg font-semibold mb-2 md:mb-3 px-1">Games</h2>
+      <ScrollArea className="h-auto">
+        <div className="space-y-1 md:space-y-2 pr-4">
           <Card
             className={cn(
               "cursor-pointer transition-all hover:shadow-lg hover:border-primary/50",
@@ -31,13 +31,13 @@ export function GameSelector({
             )}
             onClick={() => onSelectGame(null)}
           >
-            <div className="p-3 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <List className="h-5 w-5 text-muted-foreground" />
-                <span className="font-semibold">All Games</span>
+            <div className="p-2 md:p-3 flex items-center justify-between">
+              <div className="flex items-center gap-2 md:gap-3">
+                <List className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
+                <span className="font-semibold text-sm md:text-base">All Games</span>
               </div>
               {!selectedGameId && (
-                <CheckCircle2 className="h-5 w-5 text-primary" />
+                <CheckCircle2 className="h-4 w-4 md:h-5 md:w-5 text-primary" />
               )}
             </div>
           </Card>
@@ -52,15 +52,15 @@ export function GameSelector({
               )}
               onClick={() => onSelectGame(game.id)}
             >
-              <div className="p-3 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <game.icon className="h-5 w-5 text-muted-foreground" />
-                  <span className="font-semibold">{game.name}</span>
-                </div>
-                {selectedGameId === game.id && (
-                  <CheckCircle2 className="h-5 w-5 text-primary" />
-                )}
+                          <div className="p-2 md:p-3 flex items-center justify-between">
+              <div className="flex items-center gap-2 md:gap-3">
+                <game.icon className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
+                <span className="font-semibold text-sm md:text-base">{game.name}</span>
               </div>
+              {selectedGameId === game.id && (
+                <CheckCircle2 className="h-4 w-4 md:h-5 md:w-5 text-primary" />
+              )}
+            </div>
             </Card>
           ))}
         </div>
