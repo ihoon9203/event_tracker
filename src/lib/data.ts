@@ -27,10 +27,10 @@ export type Game = {
 
 const today = new Date();
 const eventColors = [
-  "bg-accent text-accent-foreground",
-  "bg-sky-500 text-white",
-  "bg-emerald-500 text-white",
-  "bg-rose-500 text-white",
+  "bg-orange-500 text-white",
+  "bg-yellow-500 text-white",
+  "bg-green-500 text-white",
+  "bg-red-500 text-white",
 ];
 
 export const games: Game[] = [
@@ -44,7 +44,7 @@ export const games: Game[] = [
         name: "Galaxy Clash",
         startDate: subDays(today, 10),
         endDate: subDays(today, 5),
-        color: eventColors[0],
+        color: eventColors[3],
       },
       {
         id: "cc2",

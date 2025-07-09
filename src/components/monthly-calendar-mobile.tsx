@@ -41,6 +41,15 @@ export function MonthlyCalendarMobile({ currentDate, events, games }: MonthlyCal
       .sort((a, b) => a.startDate.getTime() - b.startDate.getTime());
   };
 
+  const getEventColor = (colorClass: string) => {
+    console.log('Color class:', colorClass); // 디버깅용
+    if (colorClass.includes('orange')) return '#f97316';
+    if (colorClass.includes('blue')) return '#3b82f6';
+    if (colorClass.includes('green')) return '#22c55e';
+    if (colorClass.includes('red')) return '#ef4444';
+    return '#6b7280'; // default gray
+  };
+
   return (
     <div className="space-y-4">
       {/* Month Header */}
@@ -95,46 +104,46 @@ export function MonthlyCalendarMobile({ currentDate, events, games }: MonthlyCal
                     const game = games.find(g => g.id === event.gameId);
                     const isStart = isSameDay(day, event.startDate);
                     const isEnd = isSameDay(day, event.endDate);
+                    console.log('Event color:', event.color, 'Event name:', event.name); // 디버깅용
 
                     return (
                       <Popover key={event.id}>
                         <PopoverTrigger asChild>
-                          <div className="p-3 rounded-lg border cursor-pointer hover:shadow-sm transition-shadow">
+                          <div 
+                            className={cn(
+                              "p-3 rounded-lg border cursor-pointer hover:shadow-sm transition-shadow",
+                              event.color
+                            )}
+                          >
                             <div className="flex items-start justify-between">
                               <div className="flex-1">
                                 <div className="flex items-center gap-2 mb-1">
                                   {game && (
-                                    <game.icon className="h-4 w-4 text-muted-foreground" />
+                                    <game.icon className="h-4 w-4" />
                                   )}
                                   <h4 className="font-semibold text-sm">{event.name}</h4>
                                 </div>
-                                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                                <div className="flex items-center gap-2 text-xs">
                                   <span>
                                     {format(event.startDate, "MMM d")} - {format(event.endDate, "MMM d, yyyy")}
                                   </span>
                                   {!isStart && !isEnd && (
-                                    <span className="text-xs bg-muted px-2 py-1 rounded">
+                                    <span className="text-xs bg-black/10 px-2 py-1 rounded">
                                       Ongoing
                                     </span>
                                   )}
                                   {isStart && (
-                                    <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
+                                    <span className="text-xs bg-black/10 px-2 py-1 rounded">
                                       Starts
                                     </span>
                                   )}
                                   {isEnd && (
-                                    <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">
+                                    <span className="text-xs bg-black/10 px-2 py-1 rounded">
                                       Ends
                                     </span>
                                   )}
                                 </div>
                               </div>
-                              <div 
-                                className={cn(
-                                  "w-3 h-3 rounded-full ml-2 flex-shrink-0",
-                                  event.color
-                                )}
-                              />
                             </div>
                           </div>
                         </PopoverTrigger>

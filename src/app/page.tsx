@@ -32,13 +32,27 @@ export default function Home() {
   };
 
   const displayedEvents: GameEvent[] =
-    selectedGameId === null
-      ? games.flatMap((game) =>
-          game.events.map((event) => ({ ...event, gameId: game.id }))
-        )
-      : games
-          .find((g) => g.id === selectedGameId)
-          ?.events.map((event) => ({ ...event, gameId: selectedGameId })) ?? [];
+  selectedGameId === null
+    ? games.flatMap((game) =>
+        game.events.map((event) => ({
+          id: event.id,
+          name: event.name,
+          startDate: new Date(event.startDate),
+          endDate: new Date(event.endDate),
+          color: event.color,
+          gameId: game.id,
+        }))
+      )
+    : games
+        .find((g) => g.id === selectedGameId)
+        ?.events.map((event) => ({
+          id: event.id,
+          name: event.name,
+          startDate: new Date(event.startDate),
+          endDate: new Date(event.endDate),
+          color: event.color,
+          gameId: selectedGameId,
+        })) ?? [];
   
   const allGamesWithId = games.map(game => ({...game, events: game.events.map(e => ({...e, gameId: game.id}))}))
   const isMobile = useIsMobile();

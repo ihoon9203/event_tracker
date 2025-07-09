@@ -46,7 +46,8 @@ export function GameCalendar({ currentDate, events, games }: GameCalendarProps) 
 
   return (
     <div className="flex flex-col h-full bg-card rounded-lg shadow-sm border">
-      <div className="grid grid-cols-7 border-b">
+      {/* Fixed Header */}
+      <div className="grid grid-cols-7 border-b shrink-0">
         {daysOfWeek.map((day) => (
           <div
             key={day}
@@ -56,76 +57,79 @@ export function GameCalendar({ currentDate, events, games }: GameCalendarProps) 
           </div>
         ))}
       </div>
-      <div className="grid grid-cols-7 grid-rows-5 flex-1">
-        {daysInMonth.map((day, i) => {
-          const eventsOnDay = getEventsForDay(day);
-          const isCurrentMonth = isSameMonth(day, currentDate);
-          
-          return (
-            <div
-              key={day.toString()}
-              className={cn(
-                "border-r border-b p-2 flex flex-col gap-1 overflow-y-auto",
-                !isCurrentMonth && "bg-muted/50 text-muted-foreground",
-                (i + 1) % 7 === 0 && "border-r-0"
-              )}
-            >
-              <time
-                dateTime={format(day, "yyyy-MM-dd")}
+      {/* Scrollable Calendar Grid */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="grid grid-cols-7 min-h-full">
+          {daysInMonth.map((day, i) => {
+            const eventsOnDay = getEventsForDay(day);
+            const isCurrentMonth = isSameMonth(day, currentDate);
+            
+            return (
+              <div
+                key={day.toString()}
                 className={cn(
-                  "h-6 w-6 flex items-center justify-center rounded-full text-sm",
-                  isToday(day) && "bg-primary text-primary-foreground font-bold"
+                  "border-r border-b p-2 flex flex-col gap-1 min-h-[120px]",
+                  !isCurrentMonth && "bg-muted/50 text-muted-foreground",
+                  (i + 1) % 7 === 0 && "border-r-0"
                 )}
               >
-                {format(day, "d")}
-              </time>
-              <div className="flex-1 space-y-1">
-                {eventsOnDay.map((event) => {
-                  const isStart = isSameDay(day, event.startDate);
-                  const isEnd = isSameDay(day, event.endDate);
-                  const game = games.find(g => g.id === event.gameId);
+                <time
+                  dateTime={format(day, "yyyy-MM-dd")}
+                  className={cn(
+                    "h-6 w-6 flex items-center justify-center rounded-full text-sm shrink-0",
+                    isToday(day) && "bg-primary text-primary-foreground font-bold"
+                  )}
+                >
+                  {format(day, "d")}
+                </time>
+                <div className="flex-1 space-y-1 overflow-y-auto">
+                  {eventsOnDay.map((event) => {
+                    const isStart = isSameDay(day, event.startDate);
+                    const isEnd = isSameDay(day, event.endDate);
+                    const game = games.find(g => g.id === event.gameId);
 
-                  return (
-                    <Popover key={event.id}>
-                      <PopoverTrigger asChild>
-                        <div
-                          className={cn(
-                            "text-xs p-1 font-medium cursor-pointer transition-transform hover:scale-105",
-                            event.color,
-                            isStart || i % 7 === 0 ? "rounded-l-md" : "",
-                            isEnd || (i + 1) % 7 === 0 ? "rounded-r-md" : "",
-                             !isStart && i % 7 !== 0 && "rounded-l-none",
-                             !isEnd && (i + 1) % 7 !== 0 && "rounded-r-none",
-                             (isStart || i % 7 === 0) && (isEnd || (i + 1) % 7 === 0) && "rounded-md"
-                          )}
-                        >
-                          {(isStart || i % 7 === 0) && (
-                            <p className="truncate">{event.name}</p>
-                          )}
-                        </div>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-60">
-                        <div className="space-y-2">
-                          <h4 className="font-semibold">{event.name}</h4>
-                          {game && (
-                             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                               <game.icon className="h-4 w-4" />
-                               <span>{game.name}</span>
-                             </div>
-                          )}
-                          <p className="text-sm">
-                            {format(event.startDate, "MMM d")} - {" "}
-                            {format(event.endDate, "MMM d, yyyy")}
-                          </p>
-                        </div>
-                      </PopoverContent>
-                    </Popover>
-                  );
-                })}
+                    return (
+                      <Popover key={event.id}>
+                        <PopoverTrigger asChild>
+                          <div
+                            className={cn(
+                              "text-xs p-1 font-medium cursor-pointer transition-transform hover:scale-105",
+                              event.color,
+                              isStart || i % 7 === 0 ? "rounded-l-md" : "",
+                              isEnd || (i + 1) % 7 === 0 ? "rounded-r-md" : "",
+                               !isStart && i % 7 !== 0 && "rounded-l-none",
+                               !isEnd && (i + 1) % 7 !== 0 && "rounded-r-none",
+                               (isStart || i % 7 === 0) && (isEnd || (i + 1) % 7 === 0) && "rounded-md"
+                            )}
+                          >
+                            {(isStart || i % 7 === 0) && (
+                              <p className="truncate">{event.name}</p>
+                            )}
+                          </div>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-60">
+                          <div className="space-y-2">
+                            <h4 className="font-semibold">{event.name}</h4>
+                            {game && (
+                               <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                 <game.icon className="h-4 w-4" />
+                                 <span>{game.name}</span>
+                               </div>
+                            )}
+                            <p className="text-sm">
+                              {format(event.startDate, "MMM d")} - {" "}
+                              {format(event.endDate, "MMM d, yyyy")}
+                            </p>
+                          </div>
+                        </PopoverContent>
+                      </Popover>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </div>
   );
